@@ -48,7 +48,7 @@ module OpenNebula
       OpenNebula.log_debug("Deploying vm #{open_vz_data.vmid} using ctid:#{container.ctid}")
 
       # create symlink to enable ovz to find image
-      template_name = container.ctid
+      template_name = "ubuntu-#{container.ctid}"
       template_cache = create_template template_name, open_vz_data.disk
 
       # options to be passed to vzctl create
@@ -69,7 +69,7 @@ module OpenNebula
       raise OpenVzDriverError, "Container #{container.ctid} can't be deployed. Details: #{e.message}"
     ensure
       # cleanup template cache - we don't need it anymore
-      File.delete template_cache if template_cache and File.exists? template_cache
+      #File.delete template_cache if template_cache and File.exists? template_cache
       # TODO cleanup after a failed attempt to deploy, e.g. destroy a  partly-deployed container
     end
 
@@ -213,15 +213,18 @@ module OpenNebula
       OpenNebula.log_debug "Configuring network"
       nic_settings = {
           # ifname and host_mac
-          :netif_add => "eth0,,,FE:FF:FF:FF:FF:FF,"
+          #:netif_add => "eth0,,,FE:FF:FF:FF:FF:FF,"
+          :ipadd => networking[:ip]
       }
 
       container.set nic_settings
+      container.command "\"echo 'nameserver 172.19.99.9' > /etc/resolv.conf\""
+      #container.set nic_settings
 
-      OpenVZ::Util.execute "brctl addif #{networking[:bridge]} veth#{container.ctid}.0" unless networking[:bridge].nil?
+      #OpenVZ::Util.execute "brctl addif #{networking[:bridge]} veth#{container.ctid}.0" unless networking[:bridge].nil?
 
-      container.command "ifconfig eth0 #{networking[:ip]}"
-      container.command "ifconfig eth0 up"
+      #container.command "ifconfig eth0 #{networking[:ip]}"
+      #container.command "ifconfig eth0 up"
     end
 
     # Helper method used for template creation by symlinking it to the vm's datastore disk location
