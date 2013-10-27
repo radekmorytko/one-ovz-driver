@@ -218,7 +218,7 @@ module OpenNebula
       }
 
       container.set nic_settings
-      container.command "\"echo 'nameserver 172.19.99.9' > /etc/resolv.conf\""
+      container.command "\"echo 'nameserver 62.179.1.62' > /etc/resolv.conf\""
       #container.set nic_settings
 
       #OpenVZ::Util.execute "brctl addif #{networking[:bridge]} veth#{container.ctid}.0" unless networking[:bridge].nil?
