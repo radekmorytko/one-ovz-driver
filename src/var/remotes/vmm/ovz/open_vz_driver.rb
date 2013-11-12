@@ -34,7 +34,7 @@ module OpenNebula
     end
 
     # a directory where the context iso img is mounted
-    CTX_ISO_MNT_DIR = '/mnt/isotmp'
+    CTX_ISO_MNT_DIR = '/mnt'
 
     # enforce using sudo since opennebula runs script as a oneadmin
     OpenVZ::Util.enforce_sudo = true
