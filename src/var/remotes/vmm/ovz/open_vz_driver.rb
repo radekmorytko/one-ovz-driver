@@ -34,7 +34,7 @@ module OpenNebula
     end
 
     # a directory where the context iso img is mounted
-    CTX_ISO_MNT_DIR = '/mnt'
+    CTX_ISO_MNT_DIR = '/mnt/isotmp'
 
     # enforce using sudo since opennebula runs script as a oneadmin
     OpenVZ::Util.enforce_sudo = true
@@ -189,7 +189,7 @@ module OpenNebula
       ct_ids = inventory.ids.map { |e| e.to_i }
       proposed = vmid.to_i
 
-      # attempty to return propsed id
+      # attempt to return propsed id
       proposed += offset
       return proposed.to_s unless ct_ids.include? proposed
       # if that id is already taken chose the closest one to avoid conflict 
@@ -273,7 +273,7 @@ module OpenNebula
       ctx_mnt_dir = "/vz/root/#{container.ctid}#{CTX_ISO_MNT_DIR}"
 
       # mount the iso file
-      container.command "mkdir #{CTX_ISO_MNT_DIR}"
+      OpenNebula.exec_and_log "sudo mkdir -p #{ctx_mnt_dir}"
       OpenNebula.exec_and_log "sudo mount #{iso_file} #{ctx_mnt_dir} -o loop"
 
       # run all executable files. It's up to them whether they use context.sh or not
@@ -287,6 +287,13 @@ module OpenNebula
       OpenNebula.log_error "Exception while performing contextualisation: #{e.message}"
       # reraise the exception
       raise OpenVzDriverError, "Exception while performing contextualisation: #{e.message}"
+
+    ensure
+      # cleanup
+      OpenNebula.exec_and_log "sudo mountpoint #{ctx_mnt_dir}; if [ $? -eq 0 ]; then " \
+                              " sudo umount #{ctx_mnt_dir};" \
+                              " sudo rmdir #{ctx_mnt_dir};" \
+                              " fi" if ctx_mnt_dir
     end
   end
 end
