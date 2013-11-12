@@ -287,13 +287,6 @@ module OpenNebula
       OpenNebula.log_error "Exception while performing contextualisation: #{e.message}"
       # reraise the exception
       raise OpenVzDriverError, "Exception while performing contextualisation: #{e.message}"
-
-    ensure
-      # cleanup
-      OpenNebula.exec_and_log "sudo mountpoint #{ctx_mnt_dir}; if [ $? -eq 0 ]; then " \
-                              " sudo umount #{ctx_mnt_dir};" \
-                              " sudo rmdir #{ctx_mnt_dir};" \
-                              " fi" if ctx_mnt_dir
     end
   end
 end
