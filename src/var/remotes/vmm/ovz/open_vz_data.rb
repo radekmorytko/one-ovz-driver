@@ -65,6 +65,8 @@ module OpenNebula
 
     text_node :name, 'NAME'
     text_node :vmid, 'VMID'
+    text_node :cpu, 'CPU'
+    text_node :memory, 'MEMORY'
     raw_node :raw, 'RAW'
     raw_node :context, 'CONTEXT'
     raw_node :networking, 'NIC'

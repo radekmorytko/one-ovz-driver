@@ -24,6 +24,8 @@
     <TYPE><![CDATA[swap]]></TYPE>
   </DISK>
   <NAME><![CDATA[one-51]]></NAME>
+  <CPU><![CDATA[0.2]]></CPU>
+  <MEMORY><![CDATA[128]]></MEMORY>
   <NIC>
     <BRIDGE><![CDATA[ovz-test-br0]]></BRIDGE>
     <IP><![CDATA[10.1.1.2]]></IP>

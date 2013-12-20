@@ -20,6 +20,8 @@ module OpenNebula
       assert_equal name, data.name
       assert_equal raw, data.raw
       assert_equal context, data.context
+      assert_equal '0.2', data.cpu
+      assert_equal '128', data.memory
 
       data = OpenVzData.new(File.new "test/resources/deployment_file_network_test.xml")
       assert_equal networking, data.networking

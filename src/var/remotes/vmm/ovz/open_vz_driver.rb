@@ -60,6 +60,7 @@ module OpenNebula
 
       # set up networking
       apply_network_settings container, open_vz_data.networking
+      container.set({:cpulimit => open_vz_data.cpu * 100, :ram => open_vz_data.memory})
 
       # and contextualise it if user provided any context info
       contextualise container, open_vz_data.context_disk, open_vz_data.context if open_vz_data.context != {}

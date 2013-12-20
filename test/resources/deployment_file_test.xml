@@ -5,7 +5,6 @@
     <IP_PRIVATE><![CDATA[192.168.0.106]]></IP_PRIVATE>
     <TARGET><![CDATA[hdb]]></TARGET>
   </CONTEXT>
-  <CPU><![CDATA[0.2]]></CPU>
   <DISK>
     <CLONE><![CDATA[YES]]></CLONE>
     <DATASTORE><![CDATA[default]]></DATASTORE>
@@ -20,6 +19,7 @@
     <TM_MAD><![CDATA[ssh]]></TM_MAD>
     <TYPE><![CDATA[DISK]]></TYPE>
   </DISK>
+  <CPU><![CDATA[0.2]]></CPU>
   <MEMORY><![CDATA[128]]></MEMORY>
   <NAME><![CDATA[one-49]]></NAME>
   <NIC>
