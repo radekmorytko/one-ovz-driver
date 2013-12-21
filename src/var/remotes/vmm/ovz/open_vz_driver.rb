@@ -70,7 +70,7 @@ module OpenNebula
       raise OpenVzDriverError, "Container #{container.ctid} can't be deployed. Details: #{e.message}"
     ensure
       # cleanup template cache - we don't need it anymore
-      #File.delete template_cache if template_cache and File.exists? template_cache
+      File.delete template_cache if template_cache and File.exists? template_cache
       # TODO cleanup after a failed attempt to deploy, e.g. destroy a  partly-deployed container
     end
 
