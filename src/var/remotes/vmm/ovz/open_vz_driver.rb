@@ -22,6 +22,7 @@ require 'lib/parsers/im'
 require 'file_utils'
 require 'open_vz_data'
 require 'scripts_common'
+require 'rest_client'
 
 module OpenNebula
 
@@ -159,8 +160,10 @@ module OpenNebula
       out = (container.command "cat /proc/cpuinfo").split
       cpu_amount = out.find_all { |line| /processor/ =~ line }.size
 
-      out = (container.command "ps axo pcpu=").split
-      info[:usedcpu] = cpu_amount * out.inject(0.0) { |sum, current| sum + current.to_f }
+#      out = (container.command "ps axo pcpu=").split
+#      info[:usedcpu] = cpu_amount * out.inject(0.0) { |sum, current| sum + current.to_f }
+      response = RestClient.get 'http://192.168.0.31:4567/cpu'
+      info[:usedcpu] = response.to_str
 
       # net transmit & receive
       netrx, nettx = IMBaseParser.in_out_bandwith container.command "cat /proc/net/dev"
