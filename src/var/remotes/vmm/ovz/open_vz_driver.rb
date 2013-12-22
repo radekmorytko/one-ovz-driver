@@ -165,7 +165,7 @@ module OpenNebula
         out = (container.command "ps axo pcpu=").split
         info[:usedcpu] = cpu_amount * out.inject(0.0) { |sum, current| sum + current.to_f }
       else
-        response = RestClient.get 'http://192.168.0.31:4567/cpu'
+        response = RestClient.get "http:/#{ENV['USAGE_MOCK_IP']}/cpu"
         info[:usedcpu] = response.to_str
       end
 
