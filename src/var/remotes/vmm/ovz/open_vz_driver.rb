@@ -157,13 +157,17 @@ module OpenNebula
       # ONE requires usedcpu to be equal to cpu utilization on all processors
       # ex. usedcpu=200 when there are 2 fully loaded cpus
       # currently i get only average pcpu and multiply it by number of cpus
-      out = (container.command "cat /proc/cpuinfo").split
-      cpu_amount = out.find_all { |line| /processor/ =~ line }.size
 
-#      out = (container.command "ps axo pcpu=").split
-#      info[:usedcpu] = cpu_amount * out.inject(0.0) { |sum, current| sum + current.to_f }
-      response = RestClient.get 'http://192.168.0.31:4567/cpu'
-      info[:usedcpu] = response.to_str
+      if ENV['USAGE_MOCK_IP'] == '' then
+        out = (container.command "cat /proc/cpuinfo").split
+        cpu_amount = out.find_all { |line| /processor/ =~ line }.size
+
+        out = (container.command "ps axo pcpu=").split
+        info[:usedcpu] = cpu_amount * out.inject(0.0) { |sum, current| sum + current.to_f }
+      else
+        response = RestClient.get 'http://192.168.0.31:4567/cpu'
+        info[:usedcpu] = response.to_str
+      end
 
       # net transmit & receive
       netrx, nettx = IMBaseParser.in_out_bandwith container.command "cat /proc/net/dev"
